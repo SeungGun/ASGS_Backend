@@ -14,25 +14,25 @@ public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private Long id;
 
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     private String password;
 
-    @Column(length = 10)
+    @Column(length = 10, nullable = false)
     private String name;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
     private UserIdentity identity;
 
-    @Column(length = 20)
+    @Column(length = 20, nullable = false)
     private String nickname;
 
-    @Column(length = 50, unique = true)
+    @Column(length = 50, unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false, length = 5)
+    @Column(length = 5)
     private String studentId;
 
     @ColumnDefault("200")
@@ -40,6 +40,9 @@ public class User extends BaseEntity {
 
     @ColumnDefault("0")
     private int buyCount;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
 
     @Builder
     public User(String name, String password, UserIdentity identity, String nickname, String email, String studentId){
