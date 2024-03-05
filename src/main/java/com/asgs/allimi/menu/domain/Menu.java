@@ -30,7 +30,7 @@ public class Menu extends BaseEntity {
     private int price;
 
     @Column(nullable = false)
-    private int stockCount;
+    private int stockQuantity;
 
     private int discount;
 
@@ -46,11 +46,11 @@ public class Menu extends BaseEntity {
     private boolean isAbleBook;
 
     @Builder
-    public Menu(String name, String description, MenuCategory category, int price, int stockCount){
+    public Menu(String name, String description, MenuCategory category, int price, int stockQuantity){
         this.name = name;
         this.description = description;
         this.category = category;
         this.price = price;
-        this.stockCount = stockCount;
+        this.stockQuantity = stockQuantity;
     }
 }
