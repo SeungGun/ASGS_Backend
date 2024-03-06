@@ -7,6 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -14,6 +17,7 @@ public class Menu extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "menu_id")
     private Long id;
 
     @Column(nullable = false, length = 50)
@@ -45,6 +49,9 @@ public class Menu extends BaseEntity {
     @Column(nullable = false)
     private boolean isAbleBook;
 
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MenuOption> menuOptions = new ArrayList<>();
+
     @Builder
     public Menu(String name, String description, MenuCategory category, int price, int stockQuantity){
         this.name = name;
@@ -52,5 +59,9 @@ public class Menu extends BaseEntity {
         this.category = category;
         this.price = price;
         this.stockQuantity = stockQuantity;
+    }
+
+    public void updateMenuOptions(List<MenuOption> menuOptions){
+        this.menuOptions = menuOptions;
     }
 }
