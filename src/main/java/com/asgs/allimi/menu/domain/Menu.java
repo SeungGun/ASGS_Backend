@@ -53,12 +53,14 @@ public class Menu extends BaseEntity {
     private List<MenuOption> menuOptions = new ArrayList<>();
 
     @Builder
-    public Menu(String name, String description, MenuCategory category, int price, int stockQuantity){
+    public Menu(String name, String description, MenuCategory category, int price, int stockQuantity, int discount, boolean isAbleBook){
         this.name = name;
         this.description = description;
         this.category = category;
         this.price = price;
+        this.discount = discount;
         this.stockQuantity = stockQuantity;
+        this.isAbleBook = isAbleBook;
     }
 
     public void updateMenuOptions(List<MenuOption> menuOptions){
