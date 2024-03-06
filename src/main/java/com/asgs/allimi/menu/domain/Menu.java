@@ -62,15 +62,15 @@ public class Menu extends BaseEntity {
         this.isAbleBook = isAbleBook;
     }
 
-    public static Menu from(MenuCommandDto.Request request) {
+    public static Menu from(MenuCommandDto.Create create) {
         return Menu.builder()
-                .name(request.getName())
-                .description(request.getDescription())
-                .price(request.getPrice())
-                .stockQuantity(request.getStockQuantity())
-                .discount(request.getDiscount())
-                .category(request.getMenuCategory())
-                .isAbleBook(request.isAbleBook())
+                .name(create.getName())
+                .description(create.getDescription())
+                .price(create.getPrice())
+                .stockQuantity(create.getStockQuantity())
+                .discount(create.getDiscount())
+                .category(create.getMenuCategory())
+                .isAbleBook(create.isAbleBook())
                 .build();
     }
 
