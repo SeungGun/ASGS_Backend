@@ -11,11 +11,16 @@ public enum ResultCode {
 
     // 서버 에러
     INTERNAL_SERVER_ERROR("GS1000", "서버 내부 에러 발생"),
-    ;
+    INVALID_INPUT("GS1001", "요청 입력 값이 유효하지 않습니다."),
+
+    // 메뉴 클라이언트 에러
+    INVALID_INPUT_STOCK_QUANTITY("GS2000", "유효한 재고 수량이 아닙니다."),
+    INVALID_INPUT_MENU_PRICE("GS2001", "유효하지 않은 상품 가격입니다."),
+    INVALID_INPUT_DISCOUNT("GS2001", "유효하지 않은 상품 할인률입니다.");
     private final String code;
     private final String message;
 
-    ResultCode(String code, String message){
+    ResultCode(String code, String message) {
         this.code = code;
         this.message = message;
     }
