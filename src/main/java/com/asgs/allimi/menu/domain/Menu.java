@@ -1,6 +1,7 @@
 package com.asgs.allimi.menu.domain;
 
 import com.asgs.allimi.common.BaseEntity;
+import com.asgs.allimi.menu.dto.MenuCommandDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,19 +42,17 @@ public class Menu extends BaseEntity {
     @ColumnDefault("0")
     private int soldCount;
 
-    @ColumnDefault("true")
     @Column(nullable = false)
-    private boolean onSale;
+    private boolean onSale = true;
 
-    @ColumnDefault("false")
     @Column(nullable = false)
-    private boolean isAbleBook;
+    private boolean isAbleBook = false;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MenuOption> menuOptions = new ArrayList<>();
 
     @Builder
-    public Menu(String name, String description, MenuCategory category, int price, int stockQuantity, int discount, boolean isAbleBook){
+    public Menu(String name, String description, MenuCategory category, int price, int stockQuantity, int discount, boolean isAbleBook) {
         this.name = name;
         this.description = description;
         this.category = category;
@@ -63,7 +62,19 @@ public class Menu extends BaseEntity {
         this.isAbleBook = isAbleBook;
     }
 
-    public void updateMenuOptions(List<MenuOption> menuOptions){
+    public static Menu from(MenuCommandDto.Request request) {
+        return Menu.builder()
+                .name(request.getName())
+                .description(request.getDescription())
+                .price(request.getPrice())
+                .stockQuantity(request.getStockQuantity())
+                .discount(request.getDiscount())
+                .category(request.getMenuCategory())
+                .isAbleBook(request.isAbleBook())
+                .build();
+    }
+
+    public void updateMenuOptions(List<MenuOption> menuOptions) {
         this.menuOptions = menuOptions;
     }
 }
