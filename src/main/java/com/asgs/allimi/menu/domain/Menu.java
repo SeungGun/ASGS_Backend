@@ -49,7 +49,10 @@ public class Menu extends BaseEntity {
     private boolean isAbleBook = false;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<MenuOption> menuOptions = new ArrayList<>();
+    private List<MenuOption> menuOptions;
+
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MenuImage> menuImages = new ArrayList<>();
 
     @Builder
     public Menu(String name, String description, MenuCategory category, int price, int stockQuantity, int discount, boolean isAbleBook) {
