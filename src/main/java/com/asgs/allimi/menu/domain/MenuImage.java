@@ -15,10 +15,11 @@ import lombok.NoArgsConstructor;
 public class MenuImage extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "menu_image_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "menu_id")
     private Menu menu;
 
     @Column(nullable = false)

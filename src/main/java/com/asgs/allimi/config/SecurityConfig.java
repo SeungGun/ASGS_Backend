@@ -28,8 +28,8 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        .requestMatchers("/**").permitAll()
+//                        .anyRequest().authenticated()
                 );
         return httpSecurity.build();
     }

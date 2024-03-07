@@ -1,11 +1,15 @@
 package com.asgs.allimi.menu.domain;
 
 import com.asgs.allimi.common.BaseEntity;
+import com.asgs.allimi.menu.dto.MenuCommandDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,6 +18,7 @@ public class Menu extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "menu_id")
     private Long id;
 
     @Column(nullable = false, length = 50)
@@ -30,27 +35,46 @@ public class Menu extends BaseEntity {
     private int price;
 
     @Column(nullable = false)
-    private int stockCount;
+    private int stockQuantity;
 
     private int discount;
 
     @ColumnDefault("0")
     private int soldCount;
 
-    @ColumnDefault("true")
     @Column(nullable = false)
-    private boolean onSale;
+    private boolean onSale = true;
 
-    @ColumnDefault("false")
     @Column(nullable = false)
-    private boolean isAbleBook;
+    private boolean isAbleBook = false;
+
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MenuOption> menuOptions = new ArrayList<>();
 
     @Builder
-    public Menu(String name, String description, MenuCategory category, int price, int stockCount){
+    public Menu(String name, String description, MenuCategory category, int price, int stockQuantity, int discount, boolean isAbleBook) {
         this.name = name;
         this.description = description;
         this.category = category;
         this.price = price;
-        this.stockCount = stockCount;
+        this.discount = discount;
+        this.stockQuantity = stockQuantity;
+        this.isAbleBook = isAbleBook;
+    }
+
+    public static Menu from(MenuCommandDto.Create create) {
+        return Menu.builder()
+                .name(create.getName())
+                .description(create.getDescription())
+                .price(create.getPrice())
+                .stockQuantity(create.getStockQuantity())
+                .discount(create.getDiscount())
+                .category(create.getMenuCategory())
+                .isAbleBook(create.isAbleBook())
+                .build();
+    }
+
+    public void updateMenuOptions(List<MenuOption> menuOptions) {
+        this.menuOptions = menuOptions;
     }
 }
