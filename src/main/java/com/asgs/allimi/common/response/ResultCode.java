@@ -16,7 +16,8 @@ public enum ResultCode {
     // 메뉴 클라이언트 에러
     INVALID_INPUT_STOCK_QUANTITY("GS2000", "유효한 재고 수량이 아닙니다."),
     INVALID_INPUT_MENU_PRICE("GS2001", "유효하지 않은 상품 가격입니다."),
-    INVALID_INPUT_DISCOUNT("GS2001", "유효하지 않은 상품 할인률입니다.");
+    INVALID_INPUT_DISCOUNT("GS2002", "유효하지 않은 상품 할인률입니다."),
+    NOT_EXIT_MENU("GS2003", "존재하지 읺는 메뉴입니다.");
     private final String code;
     private final String message;
 
