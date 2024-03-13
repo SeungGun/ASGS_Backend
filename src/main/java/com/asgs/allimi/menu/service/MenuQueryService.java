@@ -1,6 +1,7 @@
 package com.asgs.allimi.menu.service;
 
 import com.asgs.allimi.common.exception.CustomClientException;
+import com.asgs.allimi.discount.RateDiscountService;
 import com.asgs.allimi.menu.domain.Menu;
 import com.asgs.allimi.menu.domain.MenuImage;
 import com.asgs.allimi.menu.dto.MenuDetailOptionQueryDto;
@@ -17,10 +18,17 @@ import static com.asgs.allimi.common.response.ResultCode.*;
 @RequiredArgsConstructor
 public class MenuQueryService {
     private final MenuRepository menuRepository;
+    private final RateDiscountService discountService;
+
+    public Menu getMenuByIdElseThrow(Long menuId) {
+        return menuRepository.findById(menuId)
+                .orElseThrow(() -> new CustomClientException(HttpStatus.NOT_FOUND, NOT_EXIT_MENU));
+    }
 
     public MenuQueryDto.Detail getDetailMenu(Long menuId) {
         Menu menu = getMenuByIdElseThrow(menuId);
 
+        // TODO: 분리하기
         MenuQueryDto.Detail response = MenuQueryDto.Detail.builder()
                 .menuId(menu.getId())
                 .name(menu.getName())
@@ -32,9 +40,10 @@ public class MenuQueryService {
                 .isAbleBook(menu.isAbleBook())
                 .build();
 
-        response.setCurrentPrice(calculateDiscount(menu.getPrice(), menu.getDiscount()));
+        response.setCurrentPrice(discountService.calculateDiscountedPrice(menu.getPrice(), menu.getDiscount()));
 
         if (menu.getMenuOptions() != null) {
+            // TODO: 분리하기
             response.setOptions(
                     menu.getMenuOptions().stream().map(option ->
                             MenuOptionQueryDto.Detail.builder()
@@ -61,14 +70,5 @@ public class MenuQueryService {
         );
 
         return response;
-    }
-
-    private Menu getMenuByIdElseThrow(Long menuId) {
-        return menuRepository.findById(menuId)
-                .orElseThrow(() -> new CustomClientException(HttpStatus.NOT_FOUND, NOT_EXIT_MENU));
-    }
-
-    private int calculateDiscount(int price, int discount) {
-        return (int) Math.floor((price * (100 - discount)) / 100.0); // 내림
     }
 }
