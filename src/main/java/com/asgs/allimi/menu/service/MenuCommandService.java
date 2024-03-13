@@ -1,6 +1,7 @@
 package com.asgs.allimi.menu.service;
 
 import com.asgs.allimi.common.exception.CustomClientException;
+import com.asgs.allimi.discount.RateDiscountService;
 import com.asgs.allimi.menu.domain.Menu;
 import com.asgs.allimi.menu.dto.MenuCommandDto;
 import com.asgs.allimi.menu.repository.MenuRepository;
@@ -17,6 +18,7 @@ import static com.asgs.allimi.common.response.ResultCode.*;
 public class MenuCommandService {
     private final MenuRepository menuRepository;
     private final MenuOptionCommandService menuOptionCommandService;
+    private final RateDiscountService discountService;
 
     public Long createMenu(MenuCommandDto.Create create) {
         validateInput(create);
@@ -42,7 +44,7 @@ public class MenuCommandService {
             throw new CustomClientException(HttpStatus.BAD_REQUEST, INVALID_INPUT_MENU_PRICE);
         }
 
-        if (!isIncludeRange(create.getDiscount())) {
+        if (!discountService.isRateInRange(create.getDiscount())) {
             throw new CustomClientException(HttpStatus.BAD_REQUEST, INVALID_INPUT_DISCOUNT);
         }
     }
@@ -51,7 +53,4 @@ public class MenuCommandService {
         return amount >= 0;
     }
 
-    private boolean isIncludeRange(int amount) {
-        return amount >= 0 && amount <= 100;
-    }
 }
