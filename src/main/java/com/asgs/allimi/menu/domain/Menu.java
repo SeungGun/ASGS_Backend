@@ -1,7 +1,6 @@
 package com.asgs.allimi.menu.domain;
 
 import com.asgs.allimi.common.BaseEntity;
-import com.asgs.allimi.menu.dto.MenuCommandDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -63,18 +62,6 @@ public class Menu extends BaseEntity {
         this.discount = discount;
         this.stockQuantity = stockQuantity;
         this.isAbleBook = isAbleBook;
-    }
-
-    public static Menu from(MenuCommandDto.Create create) {
-        return Menu.builder()
-                .name(create.getName())
-                .description(create.getDescription())
-                .price(create.getPrice())
-                .stockQuantity(create.getStockQuantity())
-                .discount(create.getDiscount())
-                .category(create.getMenuCategory())
-                .isAbleBook(create.isAbleBook())
-                .build();
     }
 
     public void updateMenuOptions(List<MenuOption> menuOptions) {
