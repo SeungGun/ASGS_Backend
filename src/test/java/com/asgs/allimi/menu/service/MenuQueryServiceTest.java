@@ -40,7 +40,7 @@ class MenuQueryServiceTest {
         Menu saved = menuRepository.save(menu);
 
         // when
-        MenuQueryDto.Detail detailMenu = menuQueryService.getDetailMenu(saved.getId());
+        MenuDetailResponse.Detail detailMenu = menuQueryService.getDetailMenu(saved.getId());
 
         // then
         assertNull(detailMenu.getOptions());
@@ -54,22 +54,22 @@ class MenuQueryServiceTest {
     @DisplayName("옵션과 저장한 상세 메뉴 조회에 성공한다.")
     void getDetailMenuWithOption() {
         // given
-        MenuCommandDto.Create create = MenuCommandDto.Create.builder()
+        MenuRequest.Create create = MenuRequest.Create.builder()
                 .name("아메리카노")
                 .description("부드러운 아메리카노")
                 .price(1000)
                 .stockQuantity(15)
                 .menuCategory(MenuCategory.MADE_BEVERAGE)
                 .options(List.of(
-                        MenuOptionCommandDto.Create.builder()
+                        MenuOptionRequest.Create.builder()
                                 .title("수령방식")
                                 .detailOptions(
                                         List.of(
-                                                MenuDetailOptionCommandDto.Create.builder()
+                                                MenuDetailOptionRequest.Create.builder()
                                                         .choice("일회용컵")
                                                         .price(300)
                                                         .build(),
-                                                MenuDetailOptionCommandDto.Create.builder()
+                                                MenuDetailOptionRequest.Create.builder()
                                                         .choice("텀블러")
                                                         .price(-500)
                                                         .build())
@@ -78,7 +78,7 @@ class MenuQueryServiceTest {
         Long menuId = menuCommandService.createMenu(create);
 
         // when
-        MenuQueryDto.Detail detailMenu = menuQueryService.getDetailMenu(menuId);
+        MenuDetailResponse.Detail detailMenu = menuQueryService.getDetailMenu(menuId);
 
         // then
         assertThat(detailMenu.getName())
@@ -87,7 +87,7 @@ class MenuQueryServiceTest {
                 .isEqualTo("수령방식");
         assertThat(detailMenu.getOptions().get(0).getDetailOptions())
                 .hasSize(2);
-        assertThat(detailMenu.getOptions().get(0).getDetailOptions().stream().map(MenuDetailOptionQueryDto.DetailOptions::getChoice))
+        assertThat(detailMenu.getOptions().get(0).getDetailOptions().stream().map(MenuDetailOptionResponse.DetailOptions::getChoice))
                 .contains("일회용컵", "텀블러");
     }
 
@@ -125,9 +125,9 @@ class MenuQueryServiceTest {
         Menu saved3 = menuRepository.save(menu3);
 
         // when
-        MenuQueryDto.Detail detailMenu = menuQueryService.getDetailMenu(saved.getId());
-        MenuQueryDto.Detail detailMenu2 = menuQueryService.getDetailMenu(saved2.getId());
-        MenuQueryDto.Detail detailMenu3 = menuQueryService.getDetailMenu(saved3.getId());
+        MenuDetailResponse.Detail detailMenu = menuQueryService.getDetailMenu(saved.getId());
+        MenuDetailResponse.Detail detailMenu2 = menuQueryService.getDetailMenu(saved2.getId());
+        MenuDetailResponse.Detail detailMenu3 = menuQueryService.getDetailMenu(saved3.getId());
 
         // then
         assertThat(detailMenu.getCurrentPrice()).isEqualTo(1600);
