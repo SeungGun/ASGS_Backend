@@ -3,7 +3,7 @@ package com.asgs.allimi.menu.service;
 import com.asgs.allimi.common.exception.CustomClientException;
 import com.asgs.allimi.discount.RateDiscountService;
 import com.asgs.allimi.menu.domain.Menu;
-import com.asgs.allimi.menu.dto.MenuCommandDto;
+import com.asgs.allimi.menu.dto.MenuRequest;
 import com.asgs.allimi.menu.repository.MenuRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +17,13 @@ import static com.asgs.allimi.common.response.ResultCode.*;
 @Transactional
 public class MenuCommandService {
     private final MenuRepository menuRepository;
-    private final MenuOptionCommandService menuOptionCommandService;
+    private final MenuOptionQueryService menuOptionCommandService;
     private final RateDiscountService discountService;
 
-    public Long createMenu(MenuCommandDto.Create create) {
+    public Long createMenu(MenuRequest.Create create) {
         validateInput(create);
 
-        Menu menu = Menu.from(create);
+        Menu menu = create.toEntity();
         // TODO: 이미지 처리
         if (create.getOptions() != null && !create.getOptions().isEmpty()) {
             menu.updateMenuOptions(menuOptionCommandService.convertMenuOption(create.getOptions()));
@@ -31,16 +31,16 @@ public class MenuCommandService {
         return menuRepository.save(menu).getId();
     }
 
-    private void validateInput(MenuCommandDto.Create create) {
+    private void validateInput(MenuRequest.Create create) {
         if (create.getMenuCategory() == null) {
             throw new CustomClientException(HttpStatus.BAD_REQUEST, INVALID_INPUT);
         }
 
-        if (!isValidAmount(create.getStockQuantity())) {
+        if (isInvalidAmount(create.getStockQuantity())) {
             throw new CustomClientException(HttpStatus.BAD_REQUEST, INVALID_INPUT_STOCK_QUANTITY);
         }
 
-        if (!isValidAmount(create.getPrice())) {
+        if (isInvalidAmount(create.getPrice())) {
             throw new CustomClientException(HttpStatus.BAD_REQUEST, INVALID_INPUT_MENU_PRICE);
         }
 
@@ -49,8 +49,7 @@ public class MenuCommandService {
         }
     }
 
-    private boolean isValidAmount(int amount) {
-        return amount >= 0;
+    private boolean isInvalidAmount(int amount) {
+        return amount < 0;
     }
-
 }
