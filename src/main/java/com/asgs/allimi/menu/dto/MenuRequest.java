@@ -1,5 +1,6 @@
 package com.asgs.allimi.menu.dto;
 
+import com.asgs.allimi.menu.domain.Menu;
 import com.asgs.allimi.menu.domain.MenuCategory;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-public class MenuCommandDto {
+public class MenuRequest {
 
     @Data
     @AllArgsConstructor
@@ -29,7 +30,19 @@ public class MenuCommandDto {
         @JsonProperty("isAbleBook")
         private boolean isAbleBook;
         private boolean onSale;
-        private List<MenuOptionCommandDto.Create> options;
+        private List<MenuOptionRequest.Create> options;
+
+        public Menu toEntity() {
+            return Menu.builder()
+                    .name(this.getName())
+                    .description(this.getDescription())
+                    .price(this.getPrice())
+                    .stockQuantity(this.getStockQuantity())
+                    .discount(this.getDiscount())
+                    .category(this.getMenuCategory())
+                    .isAbleBook(this.isAbleBook())
+                    .build();
+        }
     }
 
 }

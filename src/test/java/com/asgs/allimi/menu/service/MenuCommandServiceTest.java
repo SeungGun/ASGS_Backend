@@ -4,9 +4,9 @@ import com.asgs.allimi.common.exception.CustomClientException;
 import com.asgs.allimi.common.response.ResultCode;
 import com.asgs.allimi.menu.domain.Menu;
 import com.asgs.allimi.menu.domain.MenuCategory;
-import com.asgs.allimi.menu.dto.MenuCommandDto;
-import com.asgs.allimi.menu.dto.MenuDetailOptionCommandDto;
-import com.asgs.allimi.menu.dto.MenuOptionCommandDto;
+import com.asgs.allimi.menu.dto.MenuRequest;
+import com.asgs.allimi.menu.dto.MenuDetailOptionRequest;
+import com.asgs.allimi.menu.dto.MenuOptionRequest;
 import com.asgs.allimi.menu.repository.MenuRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
@@ -31,18 +31,18 @@ class MenuCommandServiceTest {
     @DisplayName("옵션 필드를 제외한 메뉴 데이터 저장에 성공한다.")
     void createMenu() {
         // given
-        MenuCommandDto.Create create = MenuCommandDto.Create.builder()
+        MenuRequest.Create create = MenuRequest.Create.builder()
                 .name("상품1")
                 .description("설명1")
                 .price(1000)
                 .stockQuantity(15)
                 .menuCategory(MenuCategory.BREAD)
                 .options(List.of(
-                        MenuOptionCommandDto.Create.builder()
+                        MenuOptionRequest.Create.builder()
                                 .title("옵션1")
                                 .detailOptions(
                                         List.of(
-                                                MenuDetailOptionCommandDto.Create.builder()
+                                                MenuDetailOptionRequest.Create.builder()
                                                         .choice("선택지1")
                                                         .price(500)
                                                         .build())
@@ -72,7 +72,7 @@ class MenuCommandServiceTest {
     @DisplayName("메뉴 가격이 음수가 되면 예외가 발생한다.")
     void createMenuWithInvalidPrice() {
         // given
-        MenuCommandDto.Create create = MenuCommandDto.Create.builder()
+        MenuRequest.Create create = MenuRequest.Create.builder()
                 .name("상품1")
                 .description("설명1")
                 .price(-1000)
@@ -90,7 +90,7 @@ class MenuCommandServiceTest {
     @DisplayName("메뉴 재고가 음수가 되면 예외가 발생한다.")
     void createMenuWithInvalidStockQuantity() {
         // given
-        MenuCommandDto.Create create = MenuCommandDto.Create.builder()
+        MenuRequest.Create create = MenuRequest.Create.builder()
                 .name("상품1")
                 .description("설명1")
                 .price(1000)
@@ -108,7 +108,7 @@ class MenuCommandServiceTest {
     @DisplayName("메뉴 할인률이 유효 범위 내에 없다면 예외가 발생한다.")
     void createMenuWithInvalidDiscount() {
         // given
-        MenuCommandDto.Create create = MenuCommandDto.Create.builder()
+        MenuRequest.Create create = MenuRequest.Create.builder()
                 .name("상품1")
                 .description("설명1")
                 .price(3000)

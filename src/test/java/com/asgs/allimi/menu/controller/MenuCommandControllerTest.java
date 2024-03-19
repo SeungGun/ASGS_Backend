@@ -2,7 +2,7 @@ package com.asgs.allimi.menu.controller;
 
 import com.asgs.allimi.common.response.ResultCode;
 import com.asgs.allimi.menu.domain.MenuCategory;
-import com.asgs.allimi.menu.dto.MenuCommandDto;
+import com.asgs.allimi.menu.dto.MenuRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -34,7 +34,7 @@ class MenuCommandControllerTest {
     @Test
     @DisplayName("정상 데이터에 대한 메뉴 생성에 성공한다.")
     void createMenu() throws Exception{
-        MenuCommandDto.Create create = MenuCommandDto.Create.builder()
+        MenuRequest.Create create = MenuRequest.Create.builder()
                 .name("상품1")
                 .description("설명1")
                 .price(1000)
@@ -50,7 +50,7 @@ class MenuCommandControllerTest {
     @Test
     @DisplayName("메뉴 생성 입력으로 카테고리 값이 null이면 예외를 발생한다.")
     void createMenuWithInvalidCategory() throws Exception {
-        MenuCommandDto.Create create = MenuCommandDto.Create.builder()
+        MenuRequest.Create create = MenuRequest.Create.builder()
                 .name("상품1")
                 .description("설명1")
                 .price(1000)
