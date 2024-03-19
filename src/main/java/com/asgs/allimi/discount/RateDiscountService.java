@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RateDiscountService implements DiscountService {
     private static final double PERCENTAGE = 100.0;
-    private static final int MIN_PERCENTAGE = 1;
+    private static final int MIN_PERCENTAGE = 0;
     private static final int MAX_PERCENTAGE = 100;
 
     @Override
